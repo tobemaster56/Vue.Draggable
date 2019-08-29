@@ -2,10 +2,16 @@
   <div class="row">
     <div class="col-3">
       <h3>Draggable(removeable)</h3>
-      <draggable class="list-group" :list="list1" group="people" @change="log" remove-on-drop-outside>
+      <draggable
+        class="list-group"
+        :list="list1"
+        group="people"
+        @change="log"
+        remove-on-drop-outside
+      >
         <div
           class="list-group-item"
-          v-for="(element, index) in list1"
+          v-for="element in list1"
           :key="element.name"
         >
           {{ element.name }}
@@ -18,7 +24,7 @@
       <draggable class="list-group" :list="list2" group="people" @change="log">
         <div
           class="list-group-item"
-          v-for="(element, index) in list2"
+          v-for="element in list2"
           :key="element.name"
         >
           {{ element.name }}

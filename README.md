@@ -60,9 +60,9 @@ Find this project useful? You can buy me a :coffee: or a :beer:
 ### With npm or yarn 
 
 ```bash
-yarn add vuedraggable
+yarn add @yiranphp/vuesortable
 
-npm i -S vuedraggable
+npm i -S @yiranphp/vuesortable
 ```
 
 **Beware it is vuedraggable for Vue 2.0 and not vue-draggable which is for version 1.0**

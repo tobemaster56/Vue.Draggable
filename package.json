@@ -1,6 +1,6 @@
 {
-  "name": "vuesortable",
-  "version": "2.23.0",
+  "name": "@yiranphp/vuesortable",
+  "version": "2.23.1",
   "description": "draggable component for vue, fork from vuedraggable, add remove on drop outside feature",
   "license": "MIT",
   "main": "dist/vuedraggable.umd.min.js",
