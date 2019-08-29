@@ -199,6 +199,12 @@ Example setting handle, sortable and a group option:
 </draggable>
 ```
 
+#### removeOnDropOutside
+Type: `Boolean`<br>
+Default: `false`
+
+if you drag an item from list, drop outside, not into another list, the item will be removed
+
 #### tag
 Type: `String`<br>
 Default: `'div'`

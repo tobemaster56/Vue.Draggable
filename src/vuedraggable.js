@@ -121,6 +121,10 @@ const props = {
     type: Boolean,
     default: false
   },
+  removeOnDropOutside: {
+    type: Boolean,
+    default: false
+  },
   clone: {
     type: Function,
     default: original => {
@@ -396,6 +400,9 @@ const draggableComponent = {
       this.context = this.getUnderlyingVm(evt.item);
       evt.item._underlying_vm_ = this.clone(this.context.element);
       draggingElement = evt.item;
+      if (this.removeOnDropOutside) {
+        this._sortable._isOutsideDrop = true;
+      }
     },
 
     onDragAdd(evt) {
@@ -409,6 +416,9 @@ const draggableComponent = {
       this.computeIndexes();
       const added = { element, newIndex };
       this.emitChanges({ added });
+      if (this.removeOnDropOutside) {
+        this._sortable._isOutsideDrop = false;
+      }
     },
 
     onDragRemove(evt) {
@@ -422,6 +432,9 @@ const draggableComponent = {
       const removed = { element: this.context.element, oldIndex };
       this.resetTransitionData(oldIndex);
       this.emitChanges({ removed });
+      if (this.removeOnDropOutside) {
+        this._sortable._isOutsideDrop = false;
+      }
     },
 
     onDragUpdate(evt) {
@@ -432,6 +445,9 @@ const draggableComponent = {
       this.updatePosition(oldIndex, newIndex);
       const moved = { element: this.context.element, oldIndex, newIndex };
       this.emitChanges({ moved });
+      if (this.removeOnDropOutside) {
+        this._sortable._isOutsideDrop = false;
+      }
     },
 
     updateProperty(evt, propertyName) {
@@ -474,6 +490,13 @@ const draggableComponent = {
     onDragEnd() {
       this.computeIndexes();
       draggingElement = null;
+      if (this.removeOnDropOutside && this._sortable._isOutsideDrop) {
+        const oldIndex = this.context.index;
+        this.spliceList(oldIndex, 1);
+        const removed = { element: this.context.element, oldIndex };
+        this.resetTransitionData(oldIndex);
+        this.emitChanges({ removed });
+      }
     }
   }
 };
