@@ -228,6 +228,7 @@ const draggableComponent = {
     });
     !("draggable" in options) && (options.draggable = ">*");
     this._sortable = new Sortable(this.rootContainer, options);
+    this._sortable._vm_ = this;
     this.computeIndexes();
   },
 
