@@ -1,4 +1,4 @@
-import Sortable from "sortablejs";
+import { Sortable, OnSpill } from "sortablejs/modular/sortable.core.esm"
 import { insertNodeAt, camelize, console, removeNode } from "./util/helper";
 
 function buildAttribute(object, propName, value) {
@@ -98,7 +98,7 @@ function getComponentAttributes($attrs, componentData) {
   return attributes;
 }
 
-const eventsListened = ["Start", "Add", "Remove", "Update", "End"];
+const eventsListened = ["Start", "Add", "Remove", "Update", "End", "Spill"];
 const eventsToEmit = ["Choose", "Unchoose", "Sort", "Filter", "Clone"];
 const readonlyProperties = ["Move", ...eventsListened, ...eventsToEmit].map(
   evt => "on" + evt
@@ -121,7 +121,7 @@ const props = {
     type: Boolean,
     default: false
   },
-  removeOnDropOutside: {
+  removeOnSpill: {
     type: Boolean,
     default: false
   },
@@ -226,6 +226,10 @@ const draggableComponent = {
         return this.onDragMove(evt, originalEvent);
       }
     });
+    if (this.removeOnSpill) {
+      Sortable.mount(OnSpill)
+      options.removeOnSpill = true
+    }
     !("draggable" in options) && (options.draggable = ">*");
     this._sortable = new Sortable(this.rootContainer, options);
     this._sortable._vm_ = this;
@@ -401,9 +405,6 @@ const draggableComponent = {
       this.context = this.getUnderlyingVm(evt.item);
       evt.item._underlying_vm_ = this.clone(this.context.element);
       draggingElement = evt.item;
-      if (this.removeOnDropOutside) {
-        this._sortable._isOutsideDrop = true;
-      }
     },
 
     onDragAdd(evt) {
@@ -417,9 +418,14 @@ const draggableComponent = {
       this.computeIndexes();
       const added = { element, newIndex };
       this.emitChanges({ added });
-      if (this.removeOnDropOutside) {
-        this._sortable._isOutsideDrop = false;
-      }
+    },
+
+    onDragSpill() {
+      const oldIndex = this.context.index;
+      this.spliceList(oldIndex, 1);
+      const removed = { element: this.context.element, oldIndex };
+      this.resetTransitionData(oldIndex);
+      this.emitChanges({ removed });
     },
 
     onDragRemove(evt) {
@@ -433,9 +439,6 @@ const draggableComponent = {
       const removed = { element: this.context.element, oldIndex };
       this.resetTransitionData(oldIndex);
       this.emitChanges({ removed });
-      if (this.removeOnDropOutside) {
-        this._sortable._isOutsideDrop = false;
-      }
     },
 
     onDragUpdate(evt) {
@@ -446,9 +449,6 @@ const draggableComponent = {
       this.updatePosition(oldIndex, newIndex);
       const moved = { element: this.context.element, oldIndex, newIndex };
       this.emitChanges({ moved });
-      if (this.removeOnDropOutside) {
-        this._sortable._isOutsideDrop = false;
-      }
     },
 
     updateProperty(evt, propertyName) {
@@ -491,13 +491,6 @@ const draggableComponent = {
     onDragEnd() {
       this.computeIndexes();
       draggingElement = null;
-      if (this.removeOnDropOutside && this._sortable._isOutsideDrop) {
-        const oldIndex = this.context.index;
-        this.spliceList(oldIndex, 1);
-        const removed = { element: this.context.element, oldIndex };
-        this.resetTransitionData(oldIndex);
-        this.emitChanges({ removed });
-      }
     }
   }
 };

@@ -1,6 +1,6 @@
 {
   "name": "@yiranphp/vuesortable",
-  "version": "2.23.2",
+  "version": "2.23.3",
   "description": "draggable component for vue, fork from vuedraggable, add remove on drop outside feature",
   "license": "MIT",
   "main": "dist/vuedraggable.umd.min.js",
@@ -26,7 +26,7 @@
     "nested"
   ],
   "dependencies": {
-    "sortablejs": "^1.9.0"
+    "sortablejs": "^1.10.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

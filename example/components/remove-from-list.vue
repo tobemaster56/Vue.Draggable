@@ -7,7 +7,7 @@
         :list="list1"
         group="people"
         @change="log"
-        remove-on-drop-outside
+        remove-on-spill
       >
         <div
           class="list-group-item"
@@ -41,8 +41,8 @@
 import draggable from "@/vuedraggable";
 
 export default {
-  name: "remove-on-drop-outside",
-  display: "Remove on drop outside",
+  name: "remove-on-spill",
+  display: "Remove on spill",
   order: 1,
   components: {
     draggable
