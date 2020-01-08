@@ -1,4 +1,4 @@
-import { Sortable, OnSpill } from "sortablejs/modular/sortable.core.esm"
+import { Sortable, OnSpill } from "sortablejs/modular/sortable.core.esm";
 import { insertNodeAt, camelize, console, removeNode } from "./util/helper";
 
 function buildAttribute(object, propName, value) {
@@ -227,8 +227,8 @@ const draggableComponent = {
       }
     });
     if (this.removeOnSpill) {
-      Sortable.mount(OnSpill)
-      options.removeOnSpill = true
+      Sortable.mount(OnSpill);
+      options.removeOnSpill = true;
     }
     !("draggable" in options) && (options.draggable = ">*");
     this._sortable = new Sortable(this.rootContainer, options);

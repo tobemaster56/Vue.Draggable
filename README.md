@@ -199,7 +199,7 @@ Example setting handle, sortable and a group option:
 </draggable>
 ```
 
-#### removeOnDropOutside
+#### removeOnSpill
 Type: `Boolean`<br>
 Default: `false`
 
